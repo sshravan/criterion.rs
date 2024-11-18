@@ -428,7 +428,7 @@ impl Default for Criterion {
                 measurement_time: Duration::from_secs(5),
                 noise_threshold: 0.01,
                 nresamples: 100_000,
-                sample_size: 100,
+                sample_size: 10,
                 significance_level: 0.05,
                 warm_up_time: Duration::from_secs(3),
                 sampling_mode: SamplingMode::Auto,
