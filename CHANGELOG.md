@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- MSRV bumped to 1.70
+
+### Changed
+- The `real_blackbox` feature no longer has any impact. Criterion always uses `std::hint::black_box()` now.
+  Users of `criterion::black_box()` should switch to `std::hint::black_box()`.
+
+### Fixed
+
+- gnuplot version is now correctly detected when using certain Windows binaries/configurations that used to fail
+
+### Added
+
+- Async benchmarking with Tokio may be done via a `tokio::runtime::Handle`, not only a `tokio::runtime::Runtime`
+
+## [0.5.1] - 2023-05-26
+
+### Fixed
+ - Quick mode (--quick) no longer crashes with measured times over 5 seconds when --noplot is not active
 
 ## [0.5.0] - 2023-05-23
 
@@ -542,3 +560,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [0.3.6]: https://github.com/bheisler/criterion.rs/compare/0.3.5...0.3.6
 [0.4.0]: https://github.com/bheisler/criterion.rs/compare/0.3.6...0.4.0
 [0.5.0]: https://github.com/bheisler/criterion.rs/compare/0.4.0...0.5.0
+[0.5.1]: https://github.com/bheisler/criterion.rs/compare/0.5.0...0.5.1

@@ -3,9 +3,9 @@
 Nightly versions of the rust compiler support custom test frameworks. Criterion.rs provides an
 experimental implementation of a custom test framework, meaning that you can use `#[criterion]`
 attributes to mark your benchmarks instead of the normal `criterion_group!/criterion_main!` macros.
-Right now this requires some unstable features, but at some point in the future 
+Right now this requires some unstable features, but at some point in the future
 `criterion_group!/criterion_main!` will be deprecated and `#[criterion]` will become the standard
-way to define a Criterion.rs benchmark. If you'd like to try this feature out early, see the 
+way to define a Criterion.rs benchmark. If you'd like to try this feature out early, see the
 documentation below.
 
 ## Using `#[criterion]`
@@ -15,7 +15,7 @@ Once that's installed, add the dependencies to your Cargo.toml:
 
 ```toml
 [dev-dependencies]
-criterion = "0.4"
+criterion = "0.5"
 criterion-macro = "0.4"
 ```
 
@@ -28,8 +28,9 @@ Let's take a look at an example benchmark (note that this example assumes you're
 #![feature(custom_test_frameworks)]
 #![test_runner(criterion::runner)]
 
-use criterion::{Criterion, black_box};
+use criterion::Criterion;
 use criterion_macro::criterion;
+use std::hint::black_box;
 
 fn fibonacci(n: u64) -> u64 {
     match n {

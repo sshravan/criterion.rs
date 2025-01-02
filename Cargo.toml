@@ -4,8 +4,12 @@ authors = [
   "Brook Heisler <brookheisler@gmail.com>",
 ]
 name = "criterion"
-version = "0.5.0"
-edition = "2018"
+# When bumping:
+#
+# * Update version numbers in the book;
+version = "0.5.1"
+edition = "2021"
+rust-version = "1.70"
 
 description = "Statistics-driven micro-benchmarking library"
 homepage    = "https://bheisler.github.io/criterion.rs/book/index.html"
@@ -18,44 +22,41 @@ exclude     = ["book/*"]
 
 [dependencies]
 anes           = "0.1.4"
-once_cell      = "1.14"
 criterion-plot = { path = "plot", version = "0.5.0" }
-itertools      = "0.10"
-serde          = "1.0"
-serde_json     = "1.0"
-serde_derive   = "1.0"
+itertools      = "0.13"
+serde          = { version = "1.0.100", features = ["derive"] }
+serde_json     = "1.0.100"
 ciborium       = "0.2.0"
-is-terminal    = "0.4.6"
-clap           = { version = "4", default-features = false, features = ["std"] }
+clap           = { version = "=4.4.9", default-features = false, features = ["std", "help"] }
 walkdir        = "2.3"
 tinytemplate   = "1.1"
 cast           = "0.3"
 num-traits     = { version = "0.2", default-features = false, features = ["std"] }
 oorandom       = "11.1"
-regex          = { version = "1.5", default-features = false, features = ["std"] }
+regex          = { version = "1.5.1", default-features = false, features = ["std"] }
 
 # Optional dependencies
 rayon = { version = "1.3", optional = true }
 csv = { version = "1.1", optional = true }
-futures = { version = "0.3", default_features = false, optional = true }
-smol = { version = "1.2", default-features = false, optional = true }
+futures = { version = "0.3", default-features = false, features = ["executor"], optional = true }
+smol = { version = "2.0", default-features = false, optional = true }
 tokio = { version = "1.0", default-features = false, features = [
   "rt",
 ], optional = true }
-async-std = { version = "1.9", optional = true }
+async-std = { version = "1.13", optional = true }
 
 [dependencies.plotters]
-version          = "^0.3.1"
+version          = "^0.3.2"
 optional         = true
 default-features = false
 features         = ["svg_backend", "area_series", "line_series"]
 
 [dev-dependencies]
-tempfile   = "~3.5.0"
+tempfile   = "3.5.0"
 approx     = "0.5.0"
 quickcheck = { version = "1.0", default-features = false }
 rand       = "0.8"
-futures    = { version = "0.3", default_features = false, features = ["executor"] }
+futures    = "0.3"
 
 [badges]
 maintenance = { status = "passively-maintained" }
@@ -71,34 +72,38 @@ stable = [
 ]
 default = ["rayon", "plotters", "cargo_bench_support"]
 
-# Enable use of the nightly-only test::black_box function to discourage compiler optimizations.
+# This is a legacy feature that no longer does anything, but removing it would be a semver break.
 real_blackbox = []
 
+# Enable rayon support
+rayon = ["dep:rayon"]
+
+# Enable plotters support
+plotters = ["dep:plotters"]
+
 # Enable async/await support
-async = ["futures"]
+async = []
 
 # These features enable built-in support for running async benchmarks on each different async
 # runtime.
-async_futures = ["futures/executor", "async"]
-async_smol    = ["smol", "async"]
-async_tokio   = ["tokio", "async"]
-async_std     = ["async-std", "async"]
+async_futures = ["dep:futures", "async"]
+async_smol    = ["dep:smol", "async"]
+async_tokio   = ["dep:tokio", "async"]
+async_std     = ["dep:async-std", "async"]
 
-# This feature _currently_ does nothing except disable a warning message, but in 0.4.0 it will be
-# required in order to have Criterion.rs generate its own plots (as opposed to using cargo-criterion)
+# Make Criterion.rs generate its own plots (as opposed to using cargo-criterion)
 html_reports = []
 
-# This feature _currently_ does nothing except disable a warning message, but in 0.4.0 it will be
-# required in order to have Criterion.rs be usable outside of cargo-criterion.
+# Make Criterion.rs usable outside of cargo-criterion.
 cargo_bench_support = []
 
-# This feature _currently_ does nothing, but in 0.4.0 it will be
-# required in order to have Criterion.rs generate CSV files. This feature is deprecated in favor of
+# Make Criterion.rs generate CSV files. This feature is deprecated in favor of
 # cargo-criterion's --message-format=json option.
-csv_output = ["csv"]
+csv_output = ["dep:csv"]
 
 [workspace]
 exclude = ["cargo-criterion"]
+resolver = "2"
 
 [[bench]]
 name    = "bench_main"
